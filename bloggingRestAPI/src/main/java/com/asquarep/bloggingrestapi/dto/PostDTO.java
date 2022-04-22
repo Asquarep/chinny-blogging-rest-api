@@ -13,5 +13,6 @@ public class PostDTO {
     private String title;
     private String body;
     private String imageUrl;
+    private String communityName;
 
 }

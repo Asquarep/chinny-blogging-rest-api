@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 @Data
 @AllArgsConstructor
@@ -17,9 +18,9 @@ public class Reader extends BlogUser{
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany
-    private List<Post> likedPosts;
+    private List<Post> likedPosts = new ArrayList<>();
     @OneToMany
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
 
     public Reader(String firstName, String lastName, String email, String password, Long readerId, Role role, List<Post> likedPosts, List<Comment> comments) {

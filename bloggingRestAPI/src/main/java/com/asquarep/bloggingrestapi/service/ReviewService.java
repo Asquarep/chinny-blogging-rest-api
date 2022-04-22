@@ -7,9 +7,9 @@ import com.asquarep.bloggingrestapi.model.Comment;
 import com.asquarep.bloggingrestapi.model.Like;
 
 public interface ReviewService {
-    Like likePost(LikeDTO likeDTO, long postId);
+    Like likePost(LikeDTO likeDTO);
     void unlikePost(long postId, long readerId);
-    Comment commentOnPost(CommentDTO commentDTO, long postId);
+    Comment commentOnPost(CommentDTO commentDTO);
     void readerDeleteComment(long commentId, long readerId);
     void bloggerDeleteComment(long commentId, long bloggerId);
 
