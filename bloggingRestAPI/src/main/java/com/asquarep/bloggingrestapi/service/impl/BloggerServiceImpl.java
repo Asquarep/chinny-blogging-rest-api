@@ -35,13 +35,20 @@ public class BloggerServiceImpl implements BloggerService {
 
     @Override
     public Blogger bloggerSignUp(SignUpDTO signUpDTO) {
-        Blogger blogger = new Blogger();
-        blogger.setFirstName(signUpDTO.getFirstName());
-        blogger.setLastName(signUpDTO.getLastName());
-        blogger.setEmail(signUpDTO.getEmail());
-        blogger.setPassword(signUpDTO.getPassword());
-        blogger.setRole(Role.valueOf("BLOGGER"));
-        return bloggerRepository.save(blogger);
+        Optional<Blogger> bloggerCheck = bloggerRepository.findBloggerByEmail(signUpDTO.getEmail());
+        if (bloggerCheck.isEmpty()){
+            Blogger blogger = new Blogger();
+            blogger.setFirstName(signUpDTO.getFirstName());
+            blogger.setLastName(signUpDTO.getLastName());
+            blogger.setEmail(signUpDTO.getEmail());
+            blogger.setPassword(signUpDTO.getPassword());
+            blogger.setRole(Role.valueOf("BLOGGER"));
+            Blogger blogger1 = bloggerRepository.save(blogger);
+            if(blogger1.getBlogId()!=null){
+                return blogger1;
+            }
+        }
+        return null;
     }
 
     @Override

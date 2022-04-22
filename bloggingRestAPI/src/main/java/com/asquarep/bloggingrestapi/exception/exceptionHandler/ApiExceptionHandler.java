@@ -16,23 +16,20 @@ public class ApiExceptionHandler {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         TypicalApiException typicalApiException = new TypicalApiException(
                 exception.getMessage(),
-//                exception,
                 notFound,
                 ZonedDateTime.now());
-        // return response entity
         return new ResponseEntity<>(typicalApiException, notFound);
 
     }
 
     @ExceptionHandler(value = {BadRequestException.class})
-    public ResponseEntity<Object> handleApiBadRequestException(ResourceNotFoundException exception){
-        HttpStatus notFound = HttpStatus.BAD_REQUEST;
+    public ResponseEntity<Object> handleApiBadRequestException(BadRequestException exception){
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         TypicalApiException typicalApiException = new TypicalApiException(
                 exception.getMessage(),
-//                exception,
-                notFound,
+                badRequest,
                 ZonedDateTime.now()
         );
-        return new ResponseEntity<>(typicalApiException, notFound);
+        return new ResponseEntity<>(typicalApiException, badRequest);
     }
 }

@@ -7,6 +7,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
+    private String commentTitle;
     private String commentBody;
     @ManyToOne
     private Post post;

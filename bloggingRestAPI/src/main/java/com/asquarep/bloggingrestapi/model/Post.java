@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,5 +36,8 @@ public class Post {
     private List<Comment> comments;
     @OneToMany
     private List<Like> likes;
-    private LocalDateTime postedAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date datePosted;
+    @DateTimeFormat(pattern = "HH:mm")
+    private Time timePosted;
 }

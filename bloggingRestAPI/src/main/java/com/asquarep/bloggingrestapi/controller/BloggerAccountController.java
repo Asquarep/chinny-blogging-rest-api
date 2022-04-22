@@ -2,6 +2,7 @@ package com.asquarep.bloggingrestapi.controller;
 
 import com.asquarep.bloggingrestapi.dto.LoginDTO;
 import com.asquarep.bloggingrestapi.dto.SignUpDTO;
+import com.asquarep.bloggingrestapi.exception.BadRequestException;
 import com.asquarep.bloggingrestapi.exception.ResourceNotFoundException;
 import com.asquarep.bloggingrestapi.model.Blogger;
 import com.asquarep.bloggingrestapi.service.BloggerService;
@@ -33,8 +34,13 @@ public class BloggerAccountController {
 
     @PostMapping("/api/blogger/signup")
     public ResponseEntity<String> bloggerSignUp (@RequestBody SignUpDTO signUpDTO){
-        Optional<Blogger> createdBlogger = Optional.ofNullable(bloggerService.bloggerSignUp(signUpDTO));
-        return createdBlogger.map(blogger -> new ResponseEntity<>("Created new blogger with ID: " + blogger.getBlogId(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>("Sign Up unsuccessful.", HttpStatus.NOT_FOUND));
+        Blogger createdBlogger = bloggerService.bloggerSignUp(signUpDTO);
+        if(createdBlogger == null){
+            throw new BadRequestException("Blogger with this email already exists.");
+        }
+
+        return new ResponseEntity<String>("New Blog created successfully.", HttpStatus.CREATED);
+//        return createdBlogger.map(blogger -> new ResponseEntity<>("Created new blogger with ID: " + blogger.getBlogId(), HttpStatus.OK)).orElseGet(() -> new BadRequestException("Sign Up was unsuccessful"));
     }
 
 }
