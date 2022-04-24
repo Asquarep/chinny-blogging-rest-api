@@ -2,7 +2,6 @@ package com.asquarep.bloggingrestapi.service.impl;
 
 import com.asquarep.bloggingrestapi.dto.LoginDTO;
 import com.asquarep.bloggingrestapi.dto.SignUpDTO;
-import com.asquarep.bloggingrestapi.model.Blogger;
 import com.asquarep.bloggingrestapi.model.Reader;
 import com.asquarep.bloggingrestapi.model.Role;
 import com.asquarep.bloggingrestapi.repository.ReaderRepository;
@@ -14,7 +13,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
-public class ReaderServiceImpl implements ReaderService {
+public class ReaderAccountServiceImpl implements ReaderService {
     private final ReaderRepository readerRepository;
 
 

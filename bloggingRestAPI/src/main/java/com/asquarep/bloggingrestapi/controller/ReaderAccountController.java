@@ -3,9 +3,8 @@ package com.asquarep.bloggingrestapi.controller;
 import com.asquarep.bloggingrestapi.dto.LoginDTO;
 import com.asquarep.bloggingrestapi.dto.SignUpDTO;
 import com.asquarep.bloggingrestapi.exception.ResourceNotFoundException;
-import com.asquarep.bloggingrestapi.model.Blogger;
 import com.asquarep.bloggingrestapi.model.Reader;
-import com.asquarep.bloggingrestapi.service.impl.ReaderServiceImpl;
+import com.asquarep.bloggingrestapi.service.impl.ReaderAccountServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @RestController
 public class ReaderAccountController {
-    private final ReaderServiceImpl readerService;
+    private final ReaderAccountServiceImpl readerService;
 
     @GetMapping("/api/reader/login")
     public ResponseEntity<String> readerLogin(@RequestBody LoginDTO loginDTO){

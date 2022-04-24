@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,7 +26,7 @@ public class Post {
     private String body;
     private String imageUrl;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     private Blogger postedBy;
 
     private int numberOfLikes;
@@ -36,15 +35,15 @@ public class Post {
     @ManyToOne
     private Community community;
 
-    @OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany (mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany (mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany (mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate datePosted;
+    private LocalDate dateLastUpdated;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime timePosted;
+    private LocalTime lastTimePosted;
 }

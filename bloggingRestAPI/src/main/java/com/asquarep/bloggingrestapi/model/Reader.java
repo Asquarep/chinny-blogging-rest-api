@@ -17,9 +17,9 @@ public class Reader extends BlogUser{
     private Long readerId;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany
+    @OneToMany(mappedBy = "likes", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> likedPosts = new ArrayList<>();
-    @OneToMany
+    @OneToMany(mappedBy = "reader", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
 

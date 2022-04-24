@@ -1,39 +1,30 @@
 package com.asquarep.bloggingrestapi.controller;
 
+import com.asquarep.bloggingrestapi.dto.CommentDTO;
 import com.asquarep.bloggingrestapi.dto.CommunityDTO;
 import com.asquarep.bloggingrestapi.dto.PostDTO;
 import com.asquarep.bloggingrestapi.exception.BadRequestException;
-import com.asquarep.bloggingrestapi.model.Blogger;
-import com.asquarep.bloggingrestapi.model.Community;
-import com.asquarep.bloggingrestapi.model.Post;
-import com.asquarep.bloggingrestapi.service.impl.BloggerServiceImpl;
+import com.asquarep.bloggingrestapi.exception.ResourceNotFoundException;
+import com.asquarep.bloggingrestapi.service.impl.BloggerAccountServiceImpl;
 import com.asquarep.bloggingrestapi.service.impl.PostServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 @AllArgsConstructor
 @RestController
 public class BloggerPostController {
-    private final BloggerServiceImpl blogService;
+    private final BloggerAccountServiceImpl blogService;
     private final PostServiceImpl postService;
 
-
-    @GetMapping("/api/blogs")
-    public List<Blogger> getAllBlogs(){
-        return blogService.getAllBlogs();
-    }
 
 
     @PostMapping("/api/community/create-community/{blogger-id}")
     public ResponseEntity<String> createCommunity(@RequestBody CommunityDTO communityDTO, @PathVariable(value = "blogger-id") long bloggerId) {
-        Community community = postService.createCommunity(communityDTO, bloggerId);
-        if (community != null) {
+        Optional<CommunityDTO> community = postService.createCommunity(communityDTO, bloggerId);
+        if (community.isPresent()) {
             return new ResponseEntity<String>("Created Successfully", HttpStatus.CREATED);
         }else{
             throw new BadRequestException("Not authorized to perform operation, or community already exists");
@@ -49,27 +40,36 @@ public class BloggerPostController {
 //    }
 
     @PostMapping("/api/blog/create-post/{blogger-id}")
-    public ResponseEntity<String> createPost(@RequestBody PostDTO postDTO, @PathVariable("blogger-id") long bloggerId) {
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO, @PathVariable("blogger-id") long bloggerId) {
 
-        Optional<Post> createdPost =  postService.createPost(postDTO,bloggerId);
+        Optional<PostDTO> createdPost =  postService.createPost(postDTO,bloggerId);
         if (createdPost.isEmpty()) {
             throw new BadRequestException("Only registered bloggers can create posts.");
         }
-        return new ResponseEntity<String>("Post created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<PostDTO>(createdPost.get(), HttpStatus.CREATED);
     }
 
-    @PutMapping()
-    public Post editPost(long postId, long bloggerId) {
-        return null;
+    @PutMapping("/api/blog/edit-post/{post-id}/{blogger-id}")
+    public ResponseEntity<PostDTO> editPost(@RequestBody PostDTO postDTO,
+                                         @PathVariable("post-id") long postId, @PathVariable("blogger-id") long bloggerId) {
+        Optional<PostDTO> editedPost = postService.editPost(postDTO, postId, bloggerId);
+        if (editedPost.isEmpty()) {
+            throw new BadRequestException("Only registered bloggers can edit post");
+        }
+        return new ResponseEntity<PostDTO>(editedPost.get(), HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/api/blogs/{blogger-id}/posts/{post-id}/delete")
-    public void deletePostById(@PathVariable("blogger-id") long postId, @PathVariable("post-id") long bloggerId) {
+    @DeleteMapping("/api/blogs/post/{blogger-id}/{post-id}/delete")
+    public ResponseEntity<String> deletePostById(@PathVariable("post-id") long postId,
+                               @PathVariable("blogger-id") long bloggerId) {
+        return new ResponseEntity<String>(postService.deletePostById(postId, bloggerId), HttpStatus.CREATED);
 
     }
 
     @DeleteMapping("/api/blogs/{blogger-id}/posts/delete-all")
-    public void deleteAllPostsByBloggerId(@PathVariable("blogger-id") long bloggerId) {
-
+    public ResponseEntity<String> deleteAllPostsByBloggerId(@PathVariable("blogger-id") long bloggerId) {
+        return new ResponseEntity<String>(postService.deleteAllPostsByBloggerId(bloggerId), HttpStatus.OK);
     }
+
+
 }

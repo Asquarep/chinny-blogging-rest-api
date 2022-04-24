@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface CommunityRepository extends JpaRepository<Community, Long> {
     Optional<Community> findByCommunityName(String name);
+//    Optional<Community> findCommunityBy
 }

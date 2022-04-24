@@ -26,11 +26,12 @@ public class Community {
     private String communityDescription;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateCreated;
+    private LocalDate lastUpdatedDate;
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime timeCreated;
+    private LocalTime lastUpdatedTime;
 
-    @OneToMany
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
     @OneToOne
     private Blogger createdBy;

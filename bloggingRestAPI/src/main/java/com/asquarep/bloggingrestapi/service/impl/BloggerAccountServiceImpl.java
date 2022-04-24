@@ -13,14 +13,8 @@ import java.util.List;
 import java.util.Optional;
 @AllArgsConstructor
 @Service
-public class BloggerServiceImpl implements BloggerService {
+public class BloggerAccountServiceImpl implements BloggerService {
     private BloggerRepository bloggerRepository;
-
-
-    @Override
-    public List<Blogger> getAllBlogs() {
-        return bloggerRepository.findAll();
-    }
 
     @Override
     public Long bloggerLogin(LoginDTO loginDTO) {

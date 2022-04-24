@@ -1,11 +1,20 @@
 package com.asquarep.bloggingrestapi.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Comment {
     @Id
@@ -15,11 +24,14 @@ public class Comment {
     private String commentBody;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date datePosted;
+    private LocalDate lastUpdatedDate;
+
     @DateTimeFormat(pattern = "HH:mm")
-    private Time timePosted;
+    private LocalTime lastUpdatedTime;
+
     @ManyToOne
     private Post post;
+
     @ManyToOne
     private Reader reader;
 }
