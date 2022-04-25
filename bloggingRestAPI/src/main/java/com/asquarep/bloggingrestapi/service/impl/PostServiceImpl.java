@@ -9,6 +9,7 @@ import com.asquarep.bloggingrestapi.repository.*;
 import com.asquarep.bloggingrestapi.service.CommunityService;
 import com.asquarep.bloggingrestapi.service.PostService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class PostServiceImpl implements PostService, CommunityService {
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
     private final Converter converter;
+    private final ModelMapper modelMapper;
 
 
     @Override
@@ -167,15 +169,7 @@ public class PostServiceImpl implements PostService, CommunityService {
             Optional<Post> postCheck = postRepository.findByPostIdAndAndPostedBy(postId, blogger.get());
             if (postCheck.isPresent()) {
                 Optional<Community> community = communityRepository.findById(postCheck.get().getCommunity().getCommunityId());
-//                var communityPostsList = community.get().getPosts();
-//
-//                communityPostsList.removeIf(p -> p.getPostId().equals(postCheck.get().getPostId()));
-//                community.get().setPosts(communityPostsList);
-//                postCheck.get().setCommunity(null);
-////                communityPostsList.stream().filter(postToRemove -> postToRemove.getPostId() == postId).forEach(communityPostsList::remove);
-//
-////                community.get().setPosts(communityPostsList);
-//                communityRepository.save(community.get());
+
                 postRepository.delete(postCheck.get());
             } else {
                 throw new ResourceNotFoundException("Post not found, or blogger is not owner of post.");}
@@ -198,57 +192,6 @@ public class PostServiceImpl implements PostService, CommunityService {
         return null;
     }
 
-    @Override
-    public Optional<CommentDTO> commentOnPost(long postId, CommentDTO commentDTO, long userId) {
-        Optional<Reader> reader = readerRepository.findById(userId);
-        if (reader.isPresent()) {
-            Optional<Post> post = postRepository.findById(postId);
-            if (post.isPresent()) {
-                Comment comment = (Comment) converter.convertCommentorDTO(commentDTO);
-                comment.setReader(reader.get());
-                return saveCommentAndReturnDTO(post, comment);
-            } else {
-                return Optional.empty();
-            }
-        } else {
-            return commentOnPost(postId, commentDTO);
-        }
-    }
-
-    @Override
-    public Optional<CommentDTO> commentOnPost(long postId, CommentDTO commentDTO) {
-
-        Optional<Post> post = postRepository.findById(postId);
-        if (post.isPresent()) {
-            Comment comment = (Comment) converter.convertCommentorDTO(commentDTO);
-            return saveCommentAndReturnDTO(post, comment);
-        }
-        return Optional.empty();
-    }
-
-    private Optional<CommentDTO> saveCommentAndReturnDTO(Optional<Post> post, Comment comment) {
-        var post1 = post.get();
-        comment.setPost(post1);
-        post1.getComments().add(comment);
-        commentRepository.save(comment);
-        post1.setNumberOfComments(post1.getNumberOfComments() + 1);
-        postRepository.save(post1);
-
-        CommentDTO commentDTO1 = (CommentDTO) converter.convertCommentorDTO(comment);
-        return Optional.of(commentDTO1);
-    }
-
-    private Optional<LikeDTO> saveLikeAndReturnDTO(Optional<Post> post, Like like) {
-        var post1 = post.get();
-        like.setPost(post1);
-        post1.getLikes().add(like);
-        likeRepository.save(like);
-        post1.setNumberOfLikes(post1.getNumberOfLikes() + 1);
-        postRepository.save(post1);
-
-        CommentDTO commentDTO1 = (CommentDTO) converter.convertCommentorDTO(comment);
-        return Optional.of(commentDTO1);
-    }
 
     @Override
     public Optional<PostDTO> getPostById(long postId) {

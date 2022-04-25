@@ -20,7 +20,4 @@ public interface PostService {
     String deletePostById(long postId, long bloggerId);
     String deleteAllPostsByBloggerId(long bloggerId);
 
-    Optional<CommentDTO> commentOnPost(long postId, CommentDTO commentDTO, long userId);
-    Optional<CommentDTO> commentOnPost(long postId, CommentDTO commentDTO);
-
 }

@@ -1,15 +1,10 @@
 package com.asquarep.bloggingrestapi.converter;
 
-import com.asquarep.bloggingrestapi.dto.BloggerDTO;
-import com.asquarep.bloggingrestapi.dto.CommentDTO;
-import com.asquarep.bloggingrestapi.dto.CommunityDTO;
-import com.asquarep.bloggingrestapi.dto.PostDTO;
-import com.asquarep.bloggingrestapi.model.Blogger;
-import com.asquarep.bloggingrestapi.model.Comment;
-import com.asquarep.bloggingrestapi.model.Community;
-import com.asquarep.bloggingrestapi.model.Post;
+import com.asquarep.bloggingrestapi.dto.*;
+import com.asquarep.bloggingrestapi.model.*;
 import com.asquarep.bloggingrestapi.repository.CommunityRepository;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -19,6 +14,8 @@ import java.time.LocalTime;
 @Component
 public class Converter {
     private CommunityRepository communityRepository;
+    private final ModelMapper modelMapper;
+
 
     public Object convertPostOrDTO(Object postOrDTO){
         Object returnObject = new Object();
@@ -82,6 +79,24 @@ public class Converter {
             communityDTO.setCommunityDescription(((Community) communityOrDTO).getCommunityDescription());
 
             returnObject = communityDTO;
+        }
+
+        return returnObject;
+
+    }
+
+    public Object convertLikeorDTO(Object likeOrDTO){
+        Object returnObject = new Object();
+        if (likeOrDTO.getClass() == LikeDTO.class) {
+            Like like = new Like();
+
+            returnObject = like;
+        } else if (likeOrDTO.getClass() == Like.class){
+            LikeDTO likeDTO = new LikeDTO();
+            likeDTO.setPostId(((Like) likeOrDTO).getPost().getPostId());
+            likeDTO.setReaderId(((Like) likeOrDTO).getReader().getReaderId());
+
+            returnObject = likeDTO;
         }
 
         return returnObject;

@@ -8,6 +8,7 @@ import com.asquarep.bloggingrestapi.exception.ResourceNotFoundException;
 import com.asquarep.bloggingrestapi.model.Post;
 import com.asquarep.bloggingrestapi.service.impl.BloggerAccountServiceImpl;
 import com.asquarep.bloggingrestapi.service.impl.PostServiceImpl;
+import com.asquarep.bloggingrestapi.service.impl.ReviewServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class ReaderPostController {
     private final PostServiceImpl postService;
     private final BloggerAccountServiceImpl bloggerService;
+    private final ReviewServiceImpl reviewService;
 
     @GetMapping("/api/posts")
     public List<PostDTO> getAllPosts(PostDTO postDTO) {
@@ -70,7 +72,7 @@ public class ReaderPostController {
 
     @PostMapping("/api/post/{post-id}/comment/{reader-id}")
     public ResponseEntity<CommentDTO> commentOnPost(@PathVariable("post-id") long postId, @RequestBody CommentDTO commentDTO, @PathVariable("reader-id") long readerId) {
-        Optional<CommentDTO> commentDTO1 = postService.commentOnPost(postId, commentDTO, readerId);
+        Optional<CommentDTO> commentDTO1 = reviewService.commentOnPost(postId, commentDTO, readerId);
         if (commentDTO1.isEmpty()) {
             throw new ResourceNotFoundException("Post doesn't exist in blog");
         }
@@ -80,7 +82,7 @@ public class ReaderPostController {
     @PostMapping("/api/post/{post-id}/comment")
     public ResponseEntity<CommentDTO> commentOnPost(@PathVariable("post-id") long postId, @RequestBody CommentDTO commentDTO) {
 
-        Optional<CommentDTO> commentDTO1 = postService.commentOnPost(postId, commentDTO);
+        Optional<CommentDTO> commentDTO1 = reviewService.commentOnPost(postId, commentDTO);
         if (commentDTO1.isEmpty()) {
             throw new ResourceNotFoundException("Post doesn't exist in blog");
         }

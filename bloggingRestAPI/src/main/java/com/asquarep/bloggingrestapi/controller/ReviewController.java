@@ -6,6 +6,7 @@ import com.asquarep.bloggingrestapi.model.Comment;
 import com.asquarep.bloggingrestapi.model.Like;
 import com.asquarep.bloggingrestapi.service.impl.ReviewServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-public class BlogReviewController {
+public class ReviewController {
     private final ReviewServiceImpl reviewService;
 
     @PostMapping("/api/post/like-post")
@@ -33,14 +34,14 @@ public class BlogReviewController {
     }
 
     @DeleteMapping("/api/post/{comment-id}/{reader-id}/delete-comment")
-    public void readerDeleteComment(@PathVariable("comment-id") long commentId,
-                                    @PathVariable("reader-id") long readerId) {
-
+    public ResponseEntity<String> readerDeleteComment(@PathVariable("comment-id") long commentId,
+                                              @PathVariable("reader-id") long readerId) {
+        return reviewService.readerDeleteComment(commentId, readerId);
     }
 
     @DeleteMapping("/api/post/{comment-id}/{blogger-id}/delete-comment")
-    public void bloggerDeleteComment(long commentId, long bloggerId) {
-
+    public ResponseEntity<String> bloggerDeleteComment(long commentId, long bloggerId) {
+        return reviewService.bloggerDeleteComment(commentId, bloggerId);
     }
 
 }
