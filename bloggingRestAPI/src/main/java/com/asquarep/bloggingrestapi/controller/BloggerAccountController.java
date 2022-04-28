@@ -24,23 +24,12 @@ public class BloggerAccountController {
 
     @GetMapping("/api/blogger/login")
     public ResponseEntity<String> bloggerLogin(@RequestBody LoginDTO loginDTO){
-        Long loggingInUserId = bloggerService.bloggerLogin(loginDTO);
-        if (loggingInUserId == null){
-            throw new ResourceNotFoundException("No blog found with login details provided");
-        } else{
-            return new ResponseEntity<String>("Blogger with ID: " + loggingInUserId + " logged in successfully.", HttpStatus.OK);
-        }
+        return bloggerService.bloggerLogin(loginDTO);
     }
 
     @PostMapping("/api/blogger/signup")
     public ResponseEntity<String> bloggerSignUp (@RequestBody SignUpDTO signUpDTO){
-        Blogger createdBlogger = bloggerService.bloggerSignUp(signUpDTO);
-        if(createdBlogger == null){
-            throw new BadRequestException("Blogger with this email already exists.");
-        }
-
-        return new ResponseEntity<String>("New Blog created successfully.", HttpStatus.CREATED);
-//        return createdBlogger.map(blogger -> new ResponseEntity<>("Created new blogger with ID: " + blogger.getBlogId(), HttpStatus.OK)).orElseGet(() -> new BadRequestException("Sign Up was unsuccessful"));
+        return bloggerService.bloggerSignUp(signUpDTO);
     }
 
 }

@@ -26,7 +26,7 @@ public class Post {
     private String body;
     private String imageUrl;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Blogger postedBy;
 
     private int numberOfLikes;

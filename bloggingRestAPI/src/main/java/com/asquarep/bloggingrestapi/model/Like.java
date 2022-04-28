@@ -15,8 +15,9 @@ import javax.persistence.*;
 @Table(name = "likes")
 public class Like {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long likeId;
+
     @ManyToOne
     private Post post;
     @ManyToOne

@@ -1,14 +1,14 @@
 package com.asquarep.bloggingrestapi.service;
 
 import com.asquarep.bloggingrestapi.dto.CommunityDTO;
-import com.asquarep.bloggingrestapi.model.Community;
+import com.asquarep.bloggingrestapi.dto.PostDTO;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CommunityService {
-    Optional<CommunityDTO> createCommunity(CommunityDTO communityDTO, long bloggerId);
-    Optional<CommunityDTO> editCommunity(CommunityDTO communityDTO);
-    List<CommunityDTO> getAllCommunities();
-    Optional<CommunityDTO> getCommunityById(long communityId);
+    ResponseEntity<CommunityDTO> createCommunity(CommunityDTO communityDTO, long bloggerId);
+    ResponseEntity<List<CommunityDTO>> getAllCommunities();
+    ResponseEntity<CommunityDTO> getCommunityById(long communityId);
+    ResponseEntity<List<PostDTO>> getAllPostsByCommunity(long communityId);
 }
