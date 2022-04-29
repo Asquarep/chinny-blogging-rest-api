@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface BloggerService {
     public ResponseEntity<String> bloggerLogin(LoginDTO loginDTO);
     public ResponseEntity<String> bloggerSignUp(SignUpDTO signUpDTO);
-    public Optional<Blogger> getBlogById(Long blogId);
 
 
 }

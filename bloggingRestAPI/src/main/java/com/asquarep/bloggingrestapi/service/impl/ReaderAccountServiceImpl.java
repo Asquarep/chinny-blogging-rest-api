@@ -27,10 +27,10 @@ public class ReaderAccountServiceImpl implements ReaderService {
         Optional<Reader> thisReader = readerRepository.findReaderByEmail(loginDTO.getEmail());
         if(thisReader.isPresent()){
             if(thisReader.get().getPassword().equals(loginDTO.getPassword())){
-                return new ResponseEntity<String>("Blogger with ID: " + thisReader.get().getReaderId() + " logged in successfully.", HttpStatus.OK);
+                return new ResponseEntity<String>("Reader with ID: " + thisReader.get().getReaderId() + " logged in successfully.", HttpStatus.OK);
             }
         }
-        throw new ResourceNotFoundException("No blog found with login details provided");
+        throw new ResourceNotFoundException("No reader found with login details provided");
     }
 
     @Override

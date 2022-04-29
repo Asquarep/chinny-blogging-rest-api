@@ -28,4 +28,5 @@ public class Blogger extends BlogUser{
         this.posts = posts;
     }
 
+
 }

@@ -39,7 +39,8 @@ public class PostServiceImpl implements PostService {
             } else {
                 Community community = (Community) converter.convertCommunityOrDTO(communityDTO);
                 community.setCreatedBy(blogger.get());
-                communityRepository.save(community);
+                Long newCommunityId = communityRepository.save(community).getCommunityId();
+                communityDTO.setId(newCommunityId);
                 return new ResponseEntity<>(communityDTO, HttpStatus.CREATED);
             }
         }

@@ -30,6 +30,7 @@ public class Converter {
             returnObject = newPost;
         } else if(postOrDTO.getClass() == Post.class){
             PostDTO newPostDTO = new PostDTO();
+            newPostDTO.setId(((Post) postOrDTO).getPostId());
             newPostDTO.setTitle(((Post) postOrDTO).getTitle());
             newPostDTO.setBody(((Post) postOrDTO).getBody());
             newPostDTO.setImageUrl(((Post) postOrDTO).getImageUrl());
@@ -75,6 +76,7 @@ public class Converter {
             returnObject = community;
         } else if (communityOrDTO.getClass() == Community.class){
             CommunityDTO communityDTO = new CommunityDTO();
+            communityDTO.setId(((Community) communityOrDTO).getCommunityId());
             communityDTO.setCommunityName(((Community) communityOrDTO).getCommunityName());
             communityDTO.setCommunityDescription(((Community) communityOrDTO).getCommunityDescription());
 

@@ -10,6 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommunityDTO {
+    private Long id;
     private String communityName;
     private String communityDescription;
+
+    public CommunityDTO(String communityName, String communityDescription) {
+        this.communityName = communityName;
+        this.communityDescription = communityDescription;
+    }
 }

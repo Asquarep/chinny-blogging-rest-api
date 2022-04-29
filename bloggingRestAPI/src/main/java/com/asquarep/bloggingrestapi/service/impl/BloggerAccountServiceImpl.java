@@ -50,8 +50,5 @@ public class BloggerAccountServiceImpl implements BloggerService {
         throw new BadRequestException("Blogger with this email already exists.");
     }
 
-    @Override
-    public Optional<Blogger> getBlogById(Long blogId) {
-        return bloggerRepository.findById(blogId);
-    }
+
 }
