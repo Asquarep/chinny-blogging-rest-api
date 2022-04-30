@@ -1,9 +1,6 @@
 package com.asquarep.bloggingrestapi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 public class Post {
     @Id

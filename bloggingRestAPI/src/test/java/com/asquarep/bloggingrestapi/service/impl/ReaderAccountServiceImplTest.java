@@ -4,6 +4,7 @@ import com.asquarep.bloggingrestapi.converter.Converter;
 import com.asquarep.bloggingrestapi.dto.BloggerDTO;
 import com.asquarep.bloggingrestapi.dto.LoginDTO;
 import com.asquarep.bloggingrestapi.dto.SignUpDTO;
+import com.asquarep.bloggingrestapi.exception.BadRequestException;
 import com.asquarep.bloggingrestapi.exception.ResourceNotFoundException;
 import com.asquarep.bloggingrestapi.model.Blogger;
 import com.asquarep.bloggingrestapi.model.Reader;
@@ -13,8 +14,11 @@ import com.asquarep.bloggingrestapi.service.ReaderService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,12 +28,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-@SpringBootTest
-class ReaderAccountServiceImplTest {
-    @Autowired
-    private ReaderService readerService;
+import static org.mockito.ArgumentMatchers.any;
 
-    @MockBean
+@ExtendWith(MockitoExtension.class)
+class ReaderAccountServiceImplTest {
+    @InjectMocks
+    private ReaderAccountServiceImpl readerService;
+
+    @Mock
     private ReaderRepository readerRepository;
 
     @Mock
@@ -76,5 +82,11 @@ class ReaderAccountServiceImplTest {
 
     @Test
     void readerSignUp() {
+        Mockito.when(readerRepository.findReaderByEmail(any())).thenReturn(Optional.empty());
+        Mockito.when(readerRepository.save(any())).thenReturn(reader);
+        ResponseEntity<String> responseEntity = readerService.readerSignUp(signUpDTO);
+        Assertions.assertThat(responseEntity.getBody()).isEqualTo("New reader account created successfully.");
+        Mockito.when(readerRepository.findReaderByEmail(signUpDTO.getEmail())).thenReturn(Optional.of(reader));
+        assertThrows(BadRequestException.class, () -> readerService.readerSignUp(signUpDTO), "Reader account with this email already exists.");
     }
 }

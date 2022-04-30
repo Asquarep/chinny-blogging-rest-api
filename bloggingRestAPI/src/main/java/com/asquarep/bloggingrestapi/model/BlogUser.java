@@ -1,6 +1,7 @@
 package com.asquarep.bloggingrestapi.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @MappedSuperclass
 public abstract class BlogUser {
     @Column(nullable = false)

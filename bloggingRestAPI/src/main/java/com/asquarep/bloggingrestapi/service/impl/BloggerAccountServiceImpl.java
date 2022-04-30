@@ -10,15 +10,16 @@ import com.asquarep.bloggingrestapi.model.Role;
 import com.asquarep.bloggingrestapi.repository.BloggerRepository;
 import com.asquarep.bloggingrestapi.service.BloggerService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class BloggerAccountServiceImpl implements BloggerService {
-    private BloggerRepository bloggerRepository;
+    private final BloggerRepository bloggerRepository;
     private final Converter converter;
 
     @Override
@@ -44,7 +45,7 @@ public class BloggerAccountServiceImpl implements BloggerService {
             blogger.setRole(Role.valueOf("BLOGGER"));
             Blogger blogger1 = bloggerRepository.save(blogger);
             if(blogger1.getBlogId()!=null){
-                return new ResponseEntity<String>("New Blog created successfully.", HttpStatus.CREATED);
+                return new ResponseEntity<>("New Blog created successfully.", HttpStatus.CREATED);
             }
         }
         throw new BadRequestException("Blogger with this email already exists.");

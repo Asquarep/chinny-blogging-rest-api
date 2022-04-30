@@ -9,19 +9,14 @@ import com.asquarep.bloggingrestapi.exception.ResourceNotFoundException;
 import com.asquarep.bloggingrestapi.model.Blogger;
 import com.asquarep.bloggingrestapi.model.Role;
 import com.asquarep.bloggingrestapi.repository.BloggerRepository;
-import com.asquarep.bloggingrestapi.service.BloggerService;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ThrowableAssert;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.*;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Objects;
@@ -30,13 +25,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
-//@ExtendWith(MockitoExtension.class)
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+//@SpringBootTest
 class BloggerAccountServiceImplTest {
-    @Autowired
-    private BloggerService bloggerService;
+    @InjectMocks
+    private BloggerAccountServiceImpl bloggerService;
 
-    @MockBean
+    @Mock
     private BloggerRepository bloggerRepository;
 
     @Mock
@@ -89,7 +84,13 @@ class BloggerAccountServiceImplTest {
 
     @Test
     void bloggerSignUp() {
-
+        Mockito.when(bloggerRepository.findBloggerByEmail(signUpDTO.getEmail())).thenReturn(Optional.empty());
+//        Mockito.when(converter.convertBloggerOrDTO(bloggerDTO)).thenReturn(blogger);
+        Mockito.when(bloggerRepository.save(any())).thenReturn(blogger);
+        ResponseEntity<String> responseEntity = bloggerService.bloggerSignUp(signUpDTO);
+        Assertions.assertThat(responseEntity.getBody()).isEqualTo("New Blog created successfully.");
+        Mockito.when(bloggerRepository.findBloggerByEmail(signUpDTO.getEmail())).thenReturn(Optional.of(blogger));
+        assertThrows(BadRequestException.class, () -> bloggerService.bloggerSignUp(signUpDTO), "Blogger with this email already exists.");
     }
 
 }
