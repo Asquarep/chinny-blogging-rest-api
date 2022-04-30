@@ -178,7 +178,7 @@ public class PostServiceImpl implements PostService {
         if(blogger.isPresent()){
             Optional<Post> postCheck = postRepository.findByPostIdAndAndPostedBy(postId, blogger.get());
             if (postCheck.isPresent()) {
-                Optional<Community> community = communityRepository.findById(postCheck.get().getCommunity().getCommunityId());
+//                Optional<Community> community = communityRepository.findById(postCheck.get().getCommunity().getCommunityId());
 
                 postRepository.delete(postCheck.get());
             } else {

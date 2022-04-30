@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+//@Builder
 @MappedSuperclass
 public abstract class BlogUser {
     @Column(nullable = false)
